@@ -16,7 +16,8 @@ class Database
         }
     }
 
-    function getConnection(){
+    function getConnection()
+    {
         return $this->dbh;
     }
 

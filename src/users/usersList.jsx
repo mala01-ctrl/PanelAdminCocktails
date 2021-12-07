@@ -5,16 +5,13 @@ import {
   TableBody,
   TableFooter,
   TableHead,
-  TablePagination,
   TableRow,
-  TableSortLabel,
   Tooltip,
 } from "@material-ui/core";
 import { TableCell, TableContainer } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { Component } from "react";
 import { getUsers } from "../services/userService";
-import DeleteIcon from "@mui/icons-material/Delete";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import Delete from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -45,6 +42,15 @@ class UsersList extends Component {
   handleOpenAddUsers = () => {
     //window.location = "/register";
     console.log(this.props);
+  };
+
+  handleDelete = (id) => {
+    const { users } = this.state;
+    let deleteUsers = users.filter((user) => {
+      return user.id !== id;
+    });
+    this.setState({ users: deleteUsers });
+    console.log(deleteUsers);
   };
 
   render() {
@@ -81,23 +87,26 @@ class UsersList extends Component {
                     <TableCell align="center">{user.email}</TableCell>
                     <TableCell align="center">{user.password}</TableCell>
                     <TableCell align="center">
-                      {" "}
-                      <Tooltip
-                        title="Elimina"
-                        onClick={this.handleOpenAddUsers}
-                      >
-                        <IconButton aria-label="delete" size="large" color="error">
+                      {}
+                      <Tooltip title="Elimina">
+                        <IconButton
+                          aria-label="delete"
+                          size="large"
+                          color="error"
+                          onClick={this.handleDelete.bind(this, user.id)}
+                        >
                           <Delete />
                         </IconButton>
                       </Tooltip>
                     </TableCell>
                     <TableCell align="center">
                       {" "}
-                      <Tooltip
-                        title="Modifica"
-                        onClick={this.handleOpenAddUsers}
-                      >
-                        <IconButton aria-label="edit" size="large">
+                      <Tooltip title="Modifica">
+                        <IconButton
+                          aria-label="edit"
+                          size="large"
+                          onClick={this.handleOpenAddUsers}
+                        >
                           <EditIcon />
                         </IconButton>
                       </Tooltip>

@@ -10,3 +10,7 @@ export function register(data) {
 export function getUsers(){
   return http.get(config.apiEndpoint + param);
 }
+
+export function deleteUser(id){
+  return http.delete(config.apiEndpoint + param + '/' + id);
+}
