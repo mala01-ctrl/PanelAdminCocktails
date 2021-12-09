@@ -11,10 +11,11 @@ import {
 import { TableCell, TableContainer } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { Component } from "react";
-import { getUsers } from "../services/userService";
+import { deleteUser, getUsers } from "../services/userService";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import Delete from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 class UsersList extends Component {
   state = {
@@ -39,30 +40,47 @@ class UsersList extends Component {
     this.setState({ newPage });
   };
 
-  handleOpenAddUsers = () => {
-    //window.location = "/register";
-    console.log(this.props);
-  };
-
-  handleDelete = (id) => {
+  handleDelete = async (id) => {
     const { users } = this.state;
     let deleteUsers = users.filter((user) => {
       return user.id !== id;
     });
-    this.setState({ users: deleteUsers });
+    try {
+      const { data } = await deleteUser(id);
+      console.log(data);
+      if (data.status) this.setState({ users: deleteUsers });
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404)
+        alert("Questo utente è già stato cancellato");
+    }
     console.log(deleteUsers);
   };
 
+  //TODO refactoring della table in un nuovo componente
   render() {
-    const columns = ["Id", "Nome", "Cognome", "Email", "Password"];
+    const columns = [
+      "Id",
+      "Nome",
+      "Cognome",
+      "Email",
+      "Password",
+      "Elimina",
+      "Modifica",
+    ];
     return (
       <div className="container" style={{ marginTop: "5%" }}>
         <div className="row">
-          <Tooltip title="Aggiungi" onClick={this.handleOpenAddUsers}>
-            <IconButton aria-label="delete" size="large">
-              <PersonAddAltIcon />
-            </IconButton>
-          </Tooltip>
+          <Link to="/register">
+            <Tooltip title="Aggiungi">
+              <IconButton
+                aria-label="add"
+                size="large"
+                style={{ color: "#3f51b5" }}
+              >
+                <PersonAddAltIcon />
+              </IconButton>
+            </Tooltip>
+          </Link>
         </div>
         <div className="row">
           <TableContainer component={Paper}>
@@ -92,8 +110,8 @@ class UsersList extends Component {
                         <IconButton
                           aria-label="delete"
                           size="large"
-                          color="error"
                           onClick={this.handleDelete.bind(this, user.id)}
+                          style={{ color: "red" }}
                         >
                           <Delete />
                         </IconButton>
@@ -102,19 +120,21 @@ class UsersList extends Component {
                     <TableCell align="center">
                       {" "}
                       <Tooltip title="Modifica">
-                        <IconButton
-                          aria-label="edit"
-                          size="large"
-                          onClick={this.handleOpenAddUsers}
-                        >
-                          <EditIcon />
-                        </IconButton>
+                        <Link to="/register">
+                          <IconButton
+                            aria-label="edit"
+                            size="large"
+                            onClick={this.handleOpenAddUsers}
+                            style={{ color: "#3f51b5" }}
+                          >
+                            <EditIcon />
+                          </IconButton>
+                        </Link>
                       </Tooltip>
                     </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
-              <TableFooter></TableFooter>
             </Table>
           </TableContainer>
         </div>
