@@ -5,6 +5,7 @@ import Cocktails from "./cocktails/cocktails";
 import Footer from "./structure/footer";
 import Home from "./structure/home";
 import Navbar from "./structure/navbar";
+import Login from "./users/login";
 import Register from "./users/register";
 import UsersList from "./users/usersList";
 
@@ -20,6 +21,7 @@ function App() {
           <Route path="/cocktails" element={<Cocktails />}></Route>
           <Route path="/register" element={<Register />}></Route>
           <Route path="/users" element={<UsersList />}></Route>
+          <Route path="/login" element={<Login />}></Route>
         </Routes>
       </BrowserRouter>
 

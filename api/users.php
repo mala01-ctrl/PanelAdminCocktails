@@ -4,7 +4,7 @@ require './Models/User.php';
 @header('Content-Type: application/json');
 @header('Access-Control-Allow-Origin: *');
 @header("Access-Control-Allow-Headers: *");
-@header("Access-Control-Allow-Methods: POST, OPTIONS, DELETE");
+@header("Access-Control-Allow-Methods: POST, OPTIONS, DELETE, GET");
 
 $URI = $_SERVER['REQUEST_URI'];
 $parsedUri = explode('/', $URI);

@@ -82,6 +82,25 @@
             }
         }
 
+        function login(){
+            $sql ="SELECT password 
+            FROM Users WHERE email = :email";
+            try{
+                $stmt = $this->conn->prepare($sql);
+                $stmt->execute(['email' => $this->email]);
+                $hashPassword = $stmt->fetch()[0];
+                if (isset($hashPassword)){
+                    if (password_verify($this->password, $hashPassword))
+                        return true;
+                    else 
+                        return "You have inserted a wrong password!";
+                }
+                return "Email or password wrong!";
+            }catch(PDOException $e){
+                return $e->getMessage();
+            }
+        }
+
         function createUser($data){
             if (isset($data->id))
                 $this->id = $data->id;

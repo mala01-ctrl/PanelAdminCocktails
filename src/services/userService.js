@@ -14,3 +14,7 @@ export function getUsers(){
 export function deleteUser(id){
   return http.delete(config.apiEndpoint + param + '/' + id);
 }
+
+export function login(data){
+  return http.post(config.apiEndpoint + "login.php", data);
+}
